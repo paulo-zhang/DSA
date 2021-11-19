@@ -13,6 +13,8 @@ All permutations of the above elements are (with ordering):
 5th: 312
 6th: 321
 
+Tutorial:
+https://www.geeksforgeeks.org/find-the-k-th-permutation-sequence-of-first-n-natural-numbers/
 Algorithm:
 If input vector is empty return result vector
  
