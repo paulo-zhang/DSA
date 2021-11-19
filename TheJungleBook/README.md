@@ -10,7 +10,7 @@ of the following is true:
 Indirect predation is transitive through any numb of levels. Each species has a maximum of 1 direct predator. No two species will ever be mutual predators, and no species is a predator of itself. Your task is to determine the minimum number of groups that must be formed to so that no species is grouped with its predators, direct or indirect. As an example, consider an array where each position represents a species and each element represents a predator of that species or-1 if there are none. The array is a [-1, 8, 6, 0, 7, 3, 8, 9, -1, 6, 1] and we’ll use zero indexing.
 
 
-`
+
 0              8
  \            / \
   3          1   6
@@ -22,5 +22,5 @@ Indirect predation is transitive through any numb of levels. Each species has a 
                        4
 These are the trees created based on the given array.
 The groups will be: [0,8], [3,1,6], [5,10,2,9], [7], [4]
-`
+
 
