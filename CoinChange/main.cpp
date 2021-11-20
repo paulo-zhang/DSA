@@ -16,7 +16,7 @@ int countCoinChange(const vector<int> &coins, int sum)
         for (size_t j = coins[i]; j <= sum; ++j)
         {
             dp[j] = dp[j] + // Solutions that do not contain current coin (or Sm). 
-                dp[j - coins[i]]; // Solutions that contain at least one Sm. 
+                dp[j - coins[i]]; // Solutions that contain at least one Sm (the one the the last Sm units.). 
         }
     }
 
