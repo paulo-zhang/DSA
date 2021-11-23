@@ -66,4 +66,8 @@ int main(int, char **)
     std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
     sum = 20;
     std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
+    sum = 120;
+    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
+    sum = 390;
+    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
 }
