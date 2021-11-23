@@ -23,6 +23,22 @@ int countCoinChange(const vector<int> &coins, int sum)
     return dp[sum];
 }
 
+int countCoinChange_recursive(const vector<int> &coins, int sum, int index = 0)
+{
+    if (sum < 0 || index >= coins.size())
+        return 0;
+
+    if (sum == 0)
+    {
+        return 1;
+    }
+
+    int count = countCoinChange_recursive(coins, sum - coins[index], index); // Solutions that contain at least one Sm (the one the the last Sm units.).
+    count += countCoinChange_recursive(coins, sum, index + 1);               // Solutions that do not contain current coin (or Sm).
+
+    return count;
+}
+
 int main(int, char **)
 {
     vector<int> coins = {2, 5};
@@ -31,23 +47,23 @@ int main(int, char **)
     cout << "\n";
 
     int sum = 0;
-    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << "\n";
+    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
     sum = 3;
-    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << "\n";
+    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
     sum = 4;
-    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << "\n";
+    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
     sum = 5;
-    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << "\n";
+    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
     sum = 7;
-    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << "\n";
+    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
     sum = 8;
-    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << "\n";
+    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
     sum = 10;
-    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << "\n";
+    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
     sum = 13;
-    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << "\n";
+    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
     sum = 15;
-    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << "\n";
+    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
     sum = 20;
-    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << "\n";
+    std::cout << "countCoinChange(" << sum << "): " << countCoinChange(coins, sum) << ", recursive(" << sum << "): " << countCoinChange_recursive(coins, sum) << "\n";
 }
