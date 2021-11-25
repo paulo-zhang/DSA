@@ -4,6 +4,9 @@
 
 using namespace std;
 // https://www.geeksforgeeks.org/longest-common-substring-dp-29/
+// https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/
+
+#define LongestCommonSubString
 
 int LCSubStr_Recursive(const string &s1, int index1, const string &s2, int index2, int count)
 {
@@ -14,8 +17,11 @@ int LCSubStr_Recursive(const string &s1, int index1, const string &s2, int index
     {
         return LCSubStr_Recursive(s1, index1 + 1, s2, index2 + 1, count + 1);
     }
-
+#ifdef LongestCommonSubString
+    return max(LCSubStr_Recursive(s1, index1 + 1, s2, index2, count), LCSubStr_Recursive(s1, index1, s2, index2 + 1, count)); // Longest Common SubString
+#else
     return max(count, max(LCSubStr_Recursive(s1, index1 + 1, s2, index2, 0), LCSubStr_Recursive(s1, index1, s2, index2 + 1, 0)));
+#endif
 }
 
 int LCSubStr_DP(const string &s1, const string &s2)
@@ -28,10 +34,14 @@ int LCSubStr_DP(const string &s1, const string &s2)
         {
             if (s1[i - 1] == s2[j - 1])
             {
+#ifdef LongestCommonSubString
+                dp[i % 2][j] = dp[(i - 1) % 2][j - 1] + 1; // // Longest Common SubString
+#else
                 if (i > 1 && j > 1 && s1[i - 2] == s2[j - 2])
                     dp[i % 2][j] = dp[(i - 1) % 2][j - 1] + 1; // Consecutive
                 else
                     dp[i % 2][j] = max(dp[(i - 1) % 2][j - 1], 1);
+#endif
             }
             else
             {
@@ -40,13 +50,13 @@ int LCSubStr_DP(const string &s1, const string &s2)
         }
     }
 
-    return dp[i % 2][s2.size()];
+    return dp[--i % 2][s2.size()];
 }
 
 int main(int, char **)
 {
-    vector<string> ss1 = {"GeeksforGeeks", "abcdxyz", "zxabcdezy", "Site:GeeksforGeeks"};
-    vector<string> ss2 = {"GeeksQuiz", "xyzabcd", "yzabcdezx", "Site:GeeksQuiz"};
+    vector<string> ss1 = {"GeeksforGeeks", "abcdxyz", "zxabcdezy", "Site:GeeksforGeeks", "AGGTAB"};
+    vector<string> ss2 = {"GeeksQuiz", "xyzabcd", "yzabcdezx", "Site:GeeksQuiz", "GXTXAYB"};
 
     for (int i = 0; i < ss1.size(); ++i)
     {
