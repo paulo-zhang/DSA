@@ -15,7 +15,7 @@ int LongestIncreasingSubsequenceSize(vector<int> &input)
     {
         auto it = lower_bound(tail.begin(), tail.begin() + length, input[i]); // Binary search
         if (it == tail.begin() + length) { // input[i] is bigger than any of the previous numbers.
-            tail[length++] = input[i]; // Extend the length
+            tail[length++] = input[i]; // Extend the length, and only mark down the end number of the sequence.
         }
         else { // input[i] is not the biggest, *it >= input
             *it = input[i]; // Replace *it, so that we maintain 'end element of smaller list is smaller than end elements of larger lists', and potentially forming the longer sequence.
