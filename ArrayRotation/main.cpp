@@ -15,23 +15,22 @@ void leftRotate(int arr[], int d, int n)
         int temp = arr[i];
         int j = i;
 
-        while (1)
+        do
         {
-            int k = j + d;
-            if (k >= n)
-                k = k - n;
+            int k = (j + d) % n;
 
             if (k == i)
             {
-                arr[j] = temp;
-                count++;
-                break;
+                arr[j] = temp; // Eventually, the copy will cirle back to the initial element i, this is the end for the inner loop.
+            }
+            else
+            {
+                arr[j] = arr[k];
             }
 
-            arr[j] = arr[k];
             count++;
             j = k;
-        }
+        } while (j != i);
     }
 }
 
@@ -40,17 +39,22 @@ void printArray(int arr[], int size)
 {
     for (int i = 0; i < size; i++)
         cout << arr[i] << " ";
+
+    cout << "\n";
 }
 
 /* Driver program to test above functions */
 int main()
 {
-    int arr[] = {1, 2, 3, 4, 5, 6, 7};
-    int n = sizeof(arr) / sizeof(arr[0]);
+    for (int i = 0; i < 10; i++)
+    {
+        int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int n = sizeof(arr) / sizeof(arr[0]);
 
-    // Function calling
-    leftRotate(arr, 2, n);
-    printArray(arr, n);
+        // Function calling
+        leftRotate(arr, i, n);
+        printArray(arr, n);
+    }
 
     return 0;
 }
