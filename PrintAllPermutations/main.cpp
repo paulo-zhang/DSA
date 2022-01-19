@@ -7,11 +7,12 @@ using namespace std;
 // https://www.geeksforgeeks.org/print-all-permutations-of-a-string-with-duplicates-allowed-in-input-string/
 
 template <bool HAS_DUPLICATION>
-void printAllPermutations(string s, string l)
+void printPickPermutations(string s, string l)
 {
-    if (s.length() < 1)
+    if (s.empty()) // no more to pick.
     {
-        cout << l + s << ", ";
+        cout << l << ", ";
+        return;
     }
 
     char c = 0;
@@ -29,16 +30,8 @@ void printAllPermutations(string s, string l)
             }
         }
 
-        string temp = "";
-        if (i < s.length() - 1)
-        {
-            temp = s.substr(0, i) + s.substr(i + 1);
-        }
-        else
-        {
-            temp = s.substr(0, i);
-        }
-        printAllPermutations<HAS_DUPLICATION>(temp, l + s[i]);
+        string temp = s.substr(0, i) + s.substr(i + 1);
+        printPickPermutations<HAS_DUPLICATION>(temp, l + s[i]); // pick one elment and add it to the result string.
     }
 }
 
@@ -48,38 +41,39 @@ void printAllPermutations(string s, string l)
 // 2. Starting index of the string
 // 3. Ending index of the string.
 template <bool HAS_DUPLICATION>
-void PrintPermutations(string a, int l, int r)
+void PrintSwapPermutations(string a, int l, int r)
 {
     // Base case
-    if (l == r)
-        cout << a << ", ";
-    else
+    if (l == r) // no more to swap.
     {
-        char c = 0;
-        // Permutations made
-        for (int i = l; i <= r; i++)
+        cout << a << ", ";
+        return;
+    }
+
+    char c = 0;
+    // Permutations made
+    for (int i = l; i <= r; i++)
+    {
+        if constexpr (HAS_DUPLICATION) // The code used to remove duplicate permutations.
         {
-            if constexpr (HAS_DUPLICATION) // The code used to remove duplicate permutations.
+            if (c == a[i])
             {
-                if (c == a[i])
-                {
-                    continue;
-                }
-                else
-                {
-                    c = a[i];
-                }
+                continue;
             }
-
-            // Swapping done
-            swap(a[l], a[i]);
-
-            // Recursion called
-            PrintPermutations<HAS_DUPLICATION>(a, l + 1, r);
-
-            // backtrack
-            swap(a[l], a[i]);
+            else
+            {
+                c = a[i];
+            }
         }
+
+        // Swapping done
+        swap(a[l], a[i]); // swap one with any other elements.
+
+        // Recursion called
+        PrintSwapPermutations<HAS_DUPLICATION>(a, l + 1, r);
+
+        // backtrack
+        swap(a[l], a[i]);
     }
 }
 
@@ -93,15 +87,19 @@ void test(string input)
 
     int n = input.size();
     cout << input << ": \n";
-    PrintPermutations<HAS_DUPLICATION>(input, 0, n - 1);
+    PrintSwapPermutations<HAS_DUPLICATION>(input, 0, n - 1);
     cout << "\n";
-    printAllPermutations<HAS_DUPLICATION>(input, "");
+    printPickPermutations<HAS_DUPLICATION>(input, "");
     cout << "\n\n";
 }
 
+#include <optional>
 // Driver Code
 int main()
 {
+    optional<string> opt = {};
+    cout << opt.value_or("");
+
     test<false>("ABCD");
     test<true>("ABCC");
     return 0;
