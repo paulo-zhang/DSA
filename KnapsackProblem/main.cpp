@@ -41,16 +41,11 @@ int knapSack_dp(int w, int wt[], int val[], int n)
 int knapSack_dp2(int w, int wt[], int val[], int n)
 {
     vector<int> k_dp(w + 1, 0); // All the best choices.
-    int i;
-    for (i = 1; i <= n; ++i)
-    {
-        for (int j = w; j >= 0; --j) // Loop from the back.
-        {
-            if (wt[i - 1] > j)
-            {
-                continue;
-            }
 
+    for (int i = 1; i <= n; ++i)
+    {
+        for (int j = w; j >= wt[i - 1]; --j) // Loop from the back.
+        {
             k_dp[j] = max(k_dp[j],                           // Case1: do not include current item.
                           val[i - 1] + k_dp[j - wt[i - 1]]); // Case2: include current item (the weight contributed by current item: wt[n - 1]).
         }
