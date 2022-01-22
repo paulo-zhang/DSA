@@ -25,7 +25,7 @@ int longestUniqueSubsttr(string input)
             currCount++;
             if (currCount > maxCount)
             {
-                maxCount = max(maxCount, currCount);
+                maxCount = currCount;
                 theString = input.substr(i + 1 - currCount, currCount);
             }
 
