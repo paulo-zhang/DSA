@@ -8,34 +8,50 @@ using namespace std;
 /* if x is present in arr[] then returns the index of
 FIRST occurrence of x in arr[0..n-1], otherwise
 returns -1 */
-int first(int arr[], int low, int high, int x)
+int lower(int arr[], int low, int high, int x)
 {
-  if(low >= high) return arr[low] == x ? low : -1;
+  if(low > high) return low;
 
   int mid = (high + low) / 2;
 
   if (arr[mid] < x)
-    return first(arr, (mid + 1), high, x);
+    return lower(arr, mid + 1, high, x);
   else
-    return first(arr, low, mid, x);
+    return lower(arr, low, mid - 1, x);
 }
 
 /* if x is present in arr[] then returns the index of
 LAST occurrence of x in arr[0..n-1], otherwise
 returns -1 */
-int last(int arr[], int low, int high, int x)
+int upper(int arr[], int low, int high, int x)
 {
-  if(low >= high) return low > 0 && arr[low - 1] == x ? low - 1 : -1; // low will be finally pointing to the next index of last x.
+  if(low > high) return low; // low will be finally pointing to the next index of last x.
   
   int mid = (high + low) / 2;
 	
   if(arr[mid] <= x)
-    return last(arr, mid + 1, high, x);
+    return upper(arr, mid + 1, high, x);
   else
-    return last(arr, low, mid, x);
+    return upper(arr, low, mid - 1, x);
 }
 
 void findFirstAndLast(int arr[], int n, int x)
+{
+	int first, last;
+	// to store first occurrence
+	first = lower(arr, 0, n - 1, x);
+	// to store last occurrence
+	last = upper(arr, 0, n - 1, x) - 1;
+
+	if (first > last) {
+		first = -1;
+		last = -1;
+	}
+
+	cout << "First: " << first << ", Last: " << last << "\n";
+}
+
+void std_LowUpper(int arr[], int n, int x)
 {
 	int first, last;
 	// to store first occurrence
@@ -47,6 +63,7 @@ void findFirstAndLast(int arr[], int n, int x)
 		first = -1;
 		last = -1;
 	}
+
 	cout << "First: " << first << ", Last: " << last << "\n";
 }
 
@@ -58,28 +75,28 @@ int main()
 
 	int x = 8;
 	cout << "val: " << x << "\n";
-	cout << "first: " << first(arr, 0, n, x) << ", last: " << last(arr, 0, n, x) << "\n";
 	findFirstAndLast(arr, n, x);
+	std_LowUpper(arr, n, x);
 
 	x = 2;
 	cout << "val: " << x << "\n";
-	cout << "first: " << first(arr, 0, n, x) << ", last: " << last(arr, 0, n, x) << "\n";
 	findFirstAndLast(arr, n, x);
+	std_LowUpper(arr, n, x);
 
 	x = 5;
 	cout << "val: " << x << "\n";
-	cout << "first: " << first(arr, 0, n, x) << ", last: " << last(arr, 0, n, x) << "\n";
 	findFirstAndLast(arr, n, x);
+	std_LowUpper(arr, n, x);
 
 	x = 9;
 	cout << "val: " << x << "\n";
-	cout << "first: " << first(arr, 0, n, x) << ", last: " << last(arr, 0, n, x) << "\n";
 	findFirstAndLast(arr, n, x);
+	std_LowUpper(arr, n, x);
 
 	x = 0;
 	cout << "val: " << x << "\n";
-	cout << "first: " << first(arr, 0, n, x) << ", last: " << last(arr, 0, n, x) << "\n";
 	findFirstAndLast(arr, n, x);
+	std_LowUpper(arr, n, x);
 
 	return 0;
 }
