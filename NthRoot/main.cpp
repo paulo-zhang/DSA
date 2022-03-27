@@ -25,16 +25,35 @@ double NthRoot(double d, double lower, double upper){
 }
 
 double cubicRoot(double d){
+    if (d < 0)
+        return 0;
+
+    if (d < 1)
+    {
+        return NthRoot<3>(d, d, 1);
+    }
+
     return NthRoot<3>(d, 1, d);
 }
 
 double squareRoot(double d){
+    if (d < 0)
+        return 0;
+
+    if (d < 1)
+    {
+        return NthRoot<2>(d, d, 1);
+    }
+
     return NthRoot<2>(d, 1, d);
 }
 
 int main()
 {
     double d = 8;
-    cout << d << "cubicRoot: " << cubicRoot(d) << "squareRoot: " << squareRoot(d);
+    cout << d << ", cubicRoot: " << cubicRoot(d) << ", squareRoot: " << squareRoot(d) << "\n";
+
+    d = 0.001;
+    cout << d << ", cubicRoot: " << cubicRoot(d) << ", squareRoot: " << squareRoot(d) << "\n";
     return 0;
 }
