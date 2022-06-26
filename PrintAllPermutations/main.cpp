@@ -7,7 +7,7 @@ using namespace std;
 // https://www.geeksforgeeks.org/print-all-permutations-of-a-string-with-duplicates-allowed-in-input-string/
 
 template <bool HAS_DUPLICATION>
-void printPickPermutations(string s, string l)
+void printPickPermutations(const string &s, string &l)
 {
     if (s.empty()) // no more to pick.
     {
@@ -24,14 +24,14 @@ void printPickPermutations(string s, string l)
             {
                 continue;
             }
-            else
-            {
-                c = s[i];
-            }
+
+            c = s[i];
         }
 
         string temp = s.substr(0, i) + s.substr(i + 1);
-        printPickPermutations<HAS_DUPLICATION>(temp, l + s[i]); // pick one elment and add it to the result string.
+        l += s[i];
+        printPickPermutations<HAS_DUPLICATION>(temp, l); // pick one elment and add it to the result string.
+        l.pop_back();
     }
 }
 
@@ -40,8 +40,8 @@ void printPickPermutations(string s, string l)
 // 1. String
 // 2. Starting index of the string
 // 3. Ending index of the string.
-template <bool HAS_DUPLICATION>
-void PrintSwapPermutations(string a, int l, int r)
+template <bool HAS_DUPLICATION> // Duplication = true not working.
+void PrintSwapPermutations(string &a, int l, int r)
 {
     // Base case
     if (l == r) // no more to swap.
@@ -60,10 +60,7 @@ void PrintSwapPermutations(string a, int l, int r)
             {
                 continue;
             }
-            else
-            {
-                c = a[i];
-            }
+            c = a[i];
         }
 
         // Swapping done
@@ -77,6 +74,31 @@ void PrintSwapPermutations(string a, int l, int r)
     }
 }
 
+bool nextPermutation(string &s) { // Always try to find a 'bigger' array.
+    int k = -1;
+    for(int i = s.size() - 2; i >= 0; i --){ // Find the first number from the back that is smaller.
+        if(s[i] < s[i + 1]){
+            k = i;
+            break;
+        }
+    }
+    
+    if(k == -1){
+        return false; // descending order, the permutating ends.
+    }
+    else{
+        for(int i = s.size() - 1; i > k; i --){
+            if(s[i] > s[k]){
+                swap(s[i], s[k]);// Swap to make a 'bigger' array.
+                reverse(s.begin() + k + 1, s.end()); // Sort the array at the back, since it's in descending order, reverse is faster.
+                break;
+            }
+        }
+    }
+    
+    return true;
+}
+
 template <bool HAS_DUPLICATION>
 void test(string input)
 {
@@ -87,9 +109,17 @@ void test(string input)
 
     int n = input.size();
     cout << input << ": \n";
-    PrintSwapPermutations<HAS_DUPLICATION>(input, 0, n - 1);
-    cout << "\n";
-    printPickPermutations<HAS_DUPLICATION>(input, "");
+    cout <<"\nswap: \n";
+    PrintSwapPermutations<HAS_DUPLICATION>(input, 0, n - 1); // This does not work when HAS_DUPLICATION == true.
+    cout <<"\npick: \n";
+    string l;
+    printPickPermutations<HAS_DUPLICATION>(input, l);
+    cout <<"\nnext: \n";
+    cout << input << ", ";
+    sort(input.begin(), input.end()); // Need to sort for it to work.
+    while(nextPermutation(input)){
+        cout << input << ", ";
+    }
     cout << "\n\n";
 }
 
@@ -102,5 +132,6 @@ int main()
 
     test<false>("ABCD");
     test<true>("ABCC");
+    test<true>("01009");
     return 0;
 }
