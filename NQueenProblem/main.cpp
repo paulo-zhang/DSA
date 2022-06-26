@@ -1,104 +1,66 @@
 // https://www.geeksforgeeks.org/n-queen-problem-backtracking-3/
+#include <vector>
+#include <string>
+#include <iostream>
 
-/* C/C++ program to solve N Queen Problem using
-   backtracking */
-#define N 16
-#include <stdbool.h>
-#include <stdio.h>
-/* ld is an array where its indices indicate row-col+N-1
- (N-1) is for shifting the difference to store negative
- indices */
-int ld[2 * N] = {0};
-/* rd is an array where its indices indicate row+col
-   and used to check whether a queen can be placed on
-   right diagonal or not*/
-int rd[2 * N] = {0};
-/*column array where its indices indicates column and
-  used to check whether a queen can be placed in that
-    row or not*/
-int cl[N] = {0};
-/* A utility function to print solution */
-void printSolution(int board[N][N])
-{
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-            printf(" %d ", board[i][j]);
-        printf("\n");
-    }
-}
-
-/* A recursive utility function to solve N
-   Queen problem */
-bool solveNQUtil(int board[N][N], int col)
-{
-    /* base case: If all queens are placed
-      then return true */
-    if (col >= N)
+using namespace std;
+class Solution {
+    vector<bool> cols; // Columns used.
+    vector<bool> ldiag; // Left diagonal lines used, for the same line, row - col is constant. 
+    vector<bool> rdiag; // Right diagonal lines used, for the same line, row + col is constant.
+    vector<string> board;
+    bool setQueen(int row, int col){
+        if(cols[col] || ldiag[board.size() - 1 + row - col] || rdiag[row + col]) return false;
+        
+        cols[col] = true;
+        ldiag[board.size() - 1 + row - col] = true;
+        rdiag[row + col] = true;
+        board[row][col] = 'Q';
         return true;
-
-    /* Consider this column and try placing
-       this queen in all rows one by one */
-    for (int i = 0; i < N; i++)
-    {
-        /* Check if the queen can be placed on
-          board[i][col] */
-        /* A check if a queen can be placed on
-           board[row][col].We just need to check
-           ld[row-col+n-1] and rd[row+coln] where
-           ld and rd are for left and right
-           diagonal respectively*/
-        if ((ld[i - col + N - 1] != 1 &&
-             rd[i + col] != 1) &&
-            cl[i] != 1)
-        {
-            /* Place this queen in board[i][col] */
-            board[i][col] = 1;
-            ld[i - col + N - 1] =
-                rd[i + col] = cl[i] = 1;
-
-            /* recur to place rest of the queens */
-            if (solveNQUtil(board, col + 1))
-                return true;
-
-            /* If placing queen in board[i][col]
-               doesn't lead to a solution, then
-               remove queen from board[i][col] */
-            board[i][col] = 0; // BACKTRACK
-            ld[i - col + N - 1] =
-                rd[i + col] = cl[i] = 0;
+    }
+    
+    void unsetQueen(int row, int col){
+        cols[col] = false;
+        ldiag[board.size() - 1 + row - col] = false;
+        rdiag[row + col] = false;
+        board[row][col] = '.';
+    }
+    void solveNQueens(int row, vector<vector<string>> &answer) {
+        if(row == board.size()){
+            answer.push_back(board);
+            return;
+        }
+        
+        for(int col = 0; col < board[row].size(); col ++){
+            if(setQueen(row, col)){
+                solveNQueens(row + 1, answer); // Try next row.
+                unsetQueen(row, col);
+            }
         }
     }
-
-    /* If the queen cannot be placed in any row in
-        this colum col  then return false */
-    return false;
-}
-/* This function solves the N Queen problem using
-   Backtracking. It mainly uses solveNQUtil() to
-   solve the problem. It returns false if queens
-   cannot be placed, otherwise, return true and
-   prints placement of queens in the form of 1s.
-   Please note that there may be more than one
-   solutions, this function prints one  of the
-   feasible solutions.*/
-bool solveNQ()
-{
-    int board[N][N] = {0};
-
-    if (solveNQUtil(board, 0) == false)
-    {
-        printf("Solution does not exist");
-        return false;
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        cols.resize(n, false);
+        ldiag.resize(2 * n, false);
+        rdiag.resize(2 * n, false);
+        board.resize(n, string(n, '.'));
+        
+        vector<vector<string>> answer;
+        solveNQueens(0, answer); // Start from the first row.
+        
+        return answer;
     }
-
-    printSolution(board);
-    return true;
-}
+};
 
 // driver program to test above function
 int main()
 {
-    solveNQ();
+    auto boards = Solution().solveNQueens(4);
+    for(const auto & b : boards){
+        for(const auto &s : b){
+            cout << s << "\n";
+        }
+        cout << "\n";
+    }
     return 0;
 }
