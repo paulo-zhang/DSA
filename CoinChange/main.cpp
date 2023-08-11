@@ -6,6 +6,8 @@ using namespace std;
 // https://www.geeksforgeeks.org/coin-change-dp-7/
 // https://www.educative.io/edpresso/coin-change-problem-2-finding-the-number-of-ways-to-make-a-sum
 
+// Five different solutions to solve this problem: https://leetcode.com/problems/coin-change-ii/solutions/3894223/c-5-solutions-top-down-recursive-memorization-bottom-up-dp/
+
 int countCoinChange(const vector<int> &coins, int sum)
 {
     vector<int> dp(sum + 1, 0);
