@@ -61,3 +61,6 @@ int main()
          << "Decreasing : " << firstFitDec(weight, n, c) << "\n";
     return 0;
 }
+
+// This is a wrong solution, similar question on leetcode: 
+// https://leetcode.com/problems/minimum-number-of-work-sessions-to-finish-the-tasks
